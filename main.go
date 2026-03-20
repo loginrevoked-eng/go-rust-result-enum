@@ -1,9 +1,5 @@
 package Result
 
-import (
-	"os"
-)
-
 type Result[T any] struct {
 	Ok  T
 	Err error
@@ -51,18 +47,4 @@ func (r Result[T]) UnwrapOrElse(f func(error) T) T {
 		return r.Ok
 	}
 	return f(r.Err)
-}
-
-func ReadFile(path string) Result[string] {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return Err[string](err)
-	}
-	return Ok(string(data))
-}
-
-func main() {
-	result := ReadFile("test.txt").Expect("Failed to read file")
-
-	println(result)
 }
